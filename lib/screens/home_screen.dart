@@ -11,37 +11,53 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   List<Note> notes = List.empty(growable: true);
   String searchText = "";
+  bool isSearching = false; // added
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-  appBar: AppBar(
-    title: const Text("Flutter Notes"),
-    bottom: PreferredSize(
-      preferredSize: Size.fromHeight(56),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: TextField(
-          onChanged: (value) {
-            setState(() {
-              searchText = value;
-            });
-          },
-          decoration: InputDecoration(
-            hintText: 'Search notes',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
+      appBar: AppBar(
+        // show TextField in place of title when searching
+        title: isSearching
+            ? TextField(
+                autofocus: true,
+                onChanged: (value) {
+                  setState(() {
+                    searchText = value;
+                  });
+                },
+                decoration: const InputDecoration(
+                  hintText: 'Search notes',
+                  border: InputBorder.none,
+                ),
+                style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
+              )
+            : const Text("Flutter Notes"),
+        actions: [
+          if (isSearching)
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                setState(() {
+                  isSearching = false;
+                  searchText = "";
+                });
+              },
+            )
+          else
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                setState(() {
+                  isSearching = true;
+                });
+              },
             ),
-            isDense: true,
-            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          ),
-        ),
+        ],
       ),
-    ),
-  ),
-      
 
       body: Builder(
         builder: (context) {
@@ -82,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onNoteUpdated(int index) {
-    // note object is already modified inside NoteView; this forces HomeScreen to rebuild.
     setState(() {});
   }
 
