@@ -13,22 +13,56 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   List<Note> notes = List.empty(growable: true);
+  String searchText = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Flutter Notes"),
+  appBar: AppBar(
+    title: const Text("Flutter Notes"),
+    bottom: PreferredSize(
+      preferredSize: Size.fromHeight(56),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: TextField(
+          onChanged: (value) {
+            setState(() {
+              searchText = value;
+            });
+          },
+          decoration: InputDecoration(
+            hintText: 'Search notes',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            isDense: true,
+            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          ),
+        ),
       ),
+    ),
+  ),
       
 
-      body: ListView.builder(
-        itemCount: notes.length,
-        itemBuilder: (context, index){
-          return NoteCard(
-            note: notes[index],
-            index: index,
-            onNoteDeleted: onNoteDeleted,
-            onNoteUpdated: onNoteUpdated, // pass update callback
+      body: Builder(
+        builder: (context) {
+          final filteredNotes = notes
+              .where((n) =>
+                  n.title.toLowerCase().contains(searchText.toLowerCase()))
+              .toList();
+
+          return ListView.builder(
+            itemCount: filteredNotes.length,
+            itemBuilder: (context, index) {
+              final displayedNote = filteredNotes[index];
+              final originalIndex = notes.indexOf(displayedNote);
+
+              return NoteCard(
+                note: displayedNote,
+                index: originalIndex,
+                onNoteDeleted: onNoteDeleted,
+                onNoteUpdated: onNoteUpdated,
+              );
+            },
           );
         },
       ),
