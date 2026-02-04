@@ -1,6 +1,11 @@
-class Note{
-  final String title;
-  final String body;
+class Note {
+  final String id;
+  String title; // made mutable
+  String body;  // changed to mutable (was final)
 
-  Note({required this.title, required this.body});
+  Note({
+    required this.id,
+    required this.title,
+    required this.body,
+  });
 }

@@ -29,12 +29,14 @@ class _CreateNoteState extends State<CreateNote> {
             TextFormField(
               controller: titleController,
               style: const TextStyle(
-                fontSize: 28
+                fontSize: 28,
+                fontWeight: FontWeight.bold
               ),
-              decoration: const InputDecoration(
-                border: InputBorder.none,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
                 hintText: "Title"
               ),
+              maxLines: 2,
             ),
             const SizedBox(height: 10,),
             TextFormField(
@@ -43,9 +45,10 @@ class _CreateNoteState extends State<CreateNote> {
                 fontSize: 18
               ),
               decoration: const InputDecoration(
-                border: InputBorder.none,
+                border: OutlineInputBorder(),
                 hintText: "Your Story"
               ),
+              maxLines: 10,
             ),
           ],
         ),
@@ -61,8 +64,9 @@ class _CreateNoteState extends State<CreateNote> {
           }
 
           final note = Note(
-            body: bodyController.text,
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
             title: titleController.text,
+            body: bodyController.text,
           );
 
           widget.onNewNoteCreated(note);

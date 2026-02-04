@@ -23,7 +23,12 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView.builder(
         itemCount: notes.length,
         itemBuilder: (context, index){
-          return NoteCard(note: notes[index], index: index, onNoteDeleted:onNoteDeleted);
+          return NoteCard(
+            note: notes[index],
+            index: index,
+            onNoteDeleted: onNoteDeleted,
+            onNoteUpdated: onNoteUpdated, // pass update callback
+          );
         },
       ),
 
@@ -38,6 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onNewNoteCreated(Note note){
     notes.add(note);
+    setState(() {});
+  }
+
+  void onNoteUpdated(int index) {
+    // note object is already modified inside NoteView; this forces HomeScreen to rebuild.
     setState(() {});
   }
 
