@@ -17,14 +17,14 @@ class NoteView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Note'),
+        title: Text(note.title),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () => _openEditDialog(context),
           ),
           IconButton(
-            icon: const Icon(Icons.delete),
+            icon: const Icon(Icons.delete_outline),
             onPressed: () {
               onNoteDeleted(index);
               Navigator.of(context).pop(); // go back after delete

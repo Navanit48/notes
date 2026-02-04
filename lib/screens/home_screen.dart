@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text("Flutter Notes"),
       ),
+      
 
       body: ListView.builder(
         itemCount: notes.length,
